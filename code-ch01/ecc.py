@@ -61,12 +61,16 @@ class FieldElement:
     def __truediv__(self, other):
         if self.prime != other.prime:
             raise TypeError('Cannot divide two numbers in different Fields')
+        a = self.num
+        b = pow(other.num, self.prime - 2)
+        num = (a * b) % self.prime
+
+        return self.__class__(num, self.prime)
         # use fermat's little theorem:
         # self.num**(p-1) % p == 1
         # this means:
         # 1/n == pow(n, p-2, p)
         # We return an element of the same class
-        raise NotImplementedError
 
 
 class FieldElementTest(TestCase):
@@ -111,8 +115,11 @@ class FieldElementTest(TestCase):
         a = FieldElement(3, 31)
         b = FieldElement(24, 31)
         self.assertEqual(a / b, FieldElement(4, 31))
+        print('Test1')
         a = FieldElement(17, 31)
         self.assertEqual(a**-3, FieldElement(29, 31))
+        print('Test2')
         a = FieldElement(4, 31)
         b = FieldElement(11, 31)
         self.assertEqual(a**-4 * b, FieldElement(13, 31))
+        print('Test3')
