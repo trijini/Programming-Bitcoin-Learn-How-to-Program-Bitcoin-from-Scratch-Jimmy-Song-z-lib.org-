@@ -20,7 +20,6 @@ class FieldElement:
         return self.num == other.num and self.prime == other.prime
 
     def __ne__(self, other):
-        # this should be the inverse of the == operator
         return not (self == other)
 
     def __add__(self, other):
@@ -141,8 +140,8 @@ class Point:
     # end::source1[]
 
     def __ne__(self, other):
-        # this should be the inverse of the == operator
-        raise NotImplementedError
+        return (self.x != other.x and self.y != other.y) \
+            or (self.a != other.a and self.b != other.b)
 
     def __repr__(self):
         if self.x is None:
