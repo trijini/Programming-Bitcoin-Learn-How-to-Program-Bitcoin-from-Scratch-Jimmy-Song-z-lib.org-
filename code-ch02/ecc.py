@@ -64,7 +64,6 @@ class FieldElement:
         # this means:
         # 1/n == pow(n, p-2, p)
         num = (self.num * pow(other.num, self.prime - 2, self.prime)) % self.prime
-        # We return an element of the same class
         return self.__class__(num, self.prime)
 
 
