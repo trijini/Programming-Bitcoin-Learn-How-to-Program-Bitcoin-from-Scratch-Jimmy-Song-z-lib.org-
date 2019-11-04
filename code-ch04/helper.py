@@ -25,7 +25,7 @@ def hash256(s):
     '''two rounds of sha256'''
     return hashlib.sha256(hashlib.sha256(s).digest()).digest()
 
-
+print('[DOM] Imported dom\'s version')
 # tag::source2[]
 def encode_base58(s):
     count = 0
@@ -40,6 +40,7 @@ def encode_base58(s):
     while num > 0:  # <2>
         num, mod = divmod(num, 58)
         result = BASE58_ALPHABET[mod] + result
+    print('[DOM] Returning from encode_base58:%s'.format(prefix + result))
     return prefix + result  # <3>
 # end::source2[]
 
