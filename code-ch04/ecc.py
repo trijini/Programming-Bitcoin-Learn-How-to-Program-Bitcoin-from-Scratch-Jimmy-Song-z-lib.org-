@@ -523,7 +523,6 @@ class S256Test(TestCase):
         secret = 888**3
         mainnet_address = '148dY81A9BmdpMhvYEVznrM45kWN32vSCN'
         testnet_address = 'mieaqB68xDCtbUBYFoUNcmZNwk74xcBfTP'
-        point = secret * G
         self.assertEqual(
             point.address(compressed=True, testnet=False), mainnet_address)
         self.assertEqual(
