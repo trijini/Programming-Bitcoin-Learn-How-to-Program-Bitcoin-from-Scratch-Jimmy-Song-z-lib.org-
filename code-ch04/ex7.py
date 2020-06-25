@@ -1,15 +1,13 @@
 def little_endian_to_int(h):
-    reversed = ''
-    print("byesfromhex")
-    print(type(bytes.fromhex(h)))
-    print(list(bytes.fromhex(h)).reverse())
-    #
-    # print(h[len(h)-1])
-    # for i in range(len(h), 0, -2):
-    #     reversed += h[i-2]+h[i-1]
-    #
-    # print('reversed'+ reversed)
-    #
-    # return (int(reversed, 16))
+    b = bytes.fromhex(h)
+    br = b[::-1]
+    return int.from_bytes(br, "big")
 
-little_endian_to_int('99c3980000000000')
+
+def int_to_little_endian(n, length):
+    print(f'arg:{n}')
+    print(n.to_bytes(length, byteorder='little'))
+    print(n.to_bytes(length, byteorder='big'))
+
+
+int_to_little_endian(10011545, 8)

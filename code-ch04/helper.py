@@ -63,25 +63,18 @@ def decode_base58(s):
     return combined[1:-4]
 
 
-def little_endian_to_int(h):
+def little_endian_to_int(b):
     '''little_endian_to_int takes byte sequence as a little-endian number.
     Returns an integer'''
-    # use int.from_bytes()
-    reversed = ''
-    print(h[len(h)-1])
-    for i in range(len(h), 0, -2):
-        reversed += str(h[i-2])+str(h[i-1])
-
-    print('reversed'+ reversed)
-
-    return (int(reversed, 16))
+    br = b[::-1]
+    return int.from_bytes(br, "big")
 
 
 def int_to_little_endian(n, length):
     '''endian_to_little_endian takes an integer and returns the little-endian
     byte sequence of length'''
     # use n.to_bytes()
-    raise NotImplementedError
+    return n.to_bytes(length, byteorder='little')
 
 
 class HelperTest(TestCase):
