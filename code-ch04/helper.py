@@ -63,11 +63,18 @@ def decode_base58(s):
     return combined[1:-4]
 
 
-def little_endian_to_int(b):
+def little_endian_to_int(h):
     '''little_endian_to_int takes byte sequence as a little-endian number.
     Returns an integer'''
     # use int.from_bytes()
-    raise NotImplementedError
+    reversed = ''
+    print(h[len(h)-1])
+    for i in range(len(h), 0, -2):
+        reversed += str(h[i-2])+str(h[i-1])
+
+    print('reversed'+ reversed)
+
+    return (int(reversed, 16))
 
 
 def int_to_little_endian(n, length):
