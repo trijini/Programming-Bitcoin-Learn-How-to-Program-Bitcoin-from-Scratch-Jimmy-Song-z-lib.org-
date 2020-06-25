@@ -10,4 +10,5 @@ def int_to_little_endian(n, length):
     print(n.to_bytes(length, byteorder='big'))
 
 
-int_to_little_endian(10011545, 8)
+print(int('7A696675', 16))
+
