@@ -170,7 +170,7 @@ class TxIn:
         # print(f'prev_tx:{prev_tx}')
 
         # prev_index is an integer in 4 bytes, little endian
-        prev_index = s.read(4)
+        prev_index = little_endian_to_int(s.read(4))
         # print(f'prev_index:{little_endian_to_int(prev_index)}')
         # use Script.parse to get the ScriptSig
 
@@ -181,7 +181,8 @@ class TxIn:
         sequence = s.read(4)[::-1].hex()
         # print(f'sequence:{sequence}')
         # return an instance of the class (see __init__ for args)
-        return TxIn(prev_tx=prev_tx, prev_index=prev_index, script_sig=script, sequence=sequence)
+        tx_ins = TxIn(prev_tx=prev_tx, prev_index=prev_index, script_sig=script, sequence=sequence)
+        return tx_ins
 
     # tag::source5[]
     def serialize(self):
