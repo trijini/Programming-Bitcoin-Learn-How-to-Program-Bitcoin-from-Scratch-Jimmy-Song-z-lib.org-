@@ -165,11 +165,23 @@ class TxIn:
         return a TxIn object
         '''
         # prev_tx is 32 bytes, little endian
+        prev_tx = s.read(32)
+        prev_tx = prev_tx[::-1]
+        # print(f'prev_tx:{prev_tx}')
+
         # prev_index is an integer in 4 bytes, little endian
+        prev_index = s.read(4)
+        # print(f'prev_index:{little_endian_to_int(prev_index)}')
         # use Script.parse to get the ScriptSig
+
+        script = Script.parse(s).serialize()
+        # print(f'script got: {script}')
+
         # sequence is an integer in 4 bytes, little-endian
+        sequence = s.read(4)[::-1].hex()
+        # print(f'sequence:{sequence}')
         # return an instance of the class (see __init__ for args)
-        raise NotImplementedError
+        return TxIn(prev_tx=prev_tx, prev_index=prev_index, script_sig=script, sequence=sequence)
 
     # tag::source5[]
     def serialize(self):

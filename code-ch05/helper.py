@@ -72,6 +72,7 @@ def int_to_little_endian(n, length):
 def read_varint(s):
     '''read_varint reads a variable integer from a stream'''
     i = s.read(1)[0]
+    print(f'within read_varint:{i}')
     if i == 0xfd:
         # 0xfd means the next two bytes are the number
         return little_endian_to_int(s.read(2))
