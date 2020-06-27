@@ -117,17 +117,23 @@ class Tx:
         num_in = read_varint(s)
         # parse num_inputs number of TxIns
         inputs = []
-        for i in range (0, num_in):
+        for i in range(0, num_in):
             inputs.append(TxIn.parse(s))
-
         # print(f'inputs{inputs}')
-        return Tx(version=version, tx_ins=inputs, tx_outs=None, locktime=None, testnet=False)
 
-        # TODO: fix error when running python3 scratchpad.py
+
         # num_outputs is a varint, use read_varint(s)
+        num_out = read_varint(s)
         # parse num_outputs number of TxOuts
+        outputs = []
+        for i in range(0, num_out):
+            outputs.append(TxOut.parse(s))
+
         # locktime is an integer in 4 bytes, little-endian
+        locktime = little_endian_to_int(s.read(4))
+
         # return an instance of the class (see __init__ for args)
+        return Tx(version=version, tx_ins=inputs, tx_outs=outputs, locktime=locktime, testnet=False)
 
     # tag::source6[]
     def serialize(self):
@@ -184,8 +190,8 @@ class TxIn:
         # prev_index is an integer in 4 bytes, little endian
         prev_index = little_endian_to_int(s.read(4))
         # print(f'prev_index:{little_endian_to_int(prev_index)}')
-        # use Script.parse to get the ScriptSig
 
+        # use Script.parse to get the ScriptSig
         script = Script.parse(s)
         # print(f'script got: {script}')
 
@@ -245,9 +251,13 @@ class TxOut:
         return a TxOut object
         '''
         # amount is an integer in 8 bytes, little endian
+        amount = s.read(8)
+        amount = little_endian_to_int(amount)
+
         # use Script.parse to get the ScriptPubKey
+        script = Script.parse(s)
+        return TxOut(amount=amount, script_pubkey=script)
         # return an instance of the class (see __init__ for args)
-        raise NotImplementedError
 
     # tag::source4[]
     def serialize(self):  # <1>

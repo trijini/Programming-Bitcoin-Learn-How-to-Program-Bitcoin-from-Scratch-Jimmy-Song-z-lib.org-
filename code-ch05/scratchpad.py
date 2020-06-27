@@ -69,5 +69,5 @@ import helper
 import script
 import tx
 
-reload(tx)
-run(tx.TxTest("test_parse_inputs"))
+raw_tx = bytes.fromhex()
+
