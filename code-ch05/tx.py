@@ -109,14 +109,25 @@ class Tx:
         return a Tx object
         '''
         # s.read(n) will return n bytes
+        print('***** Tx ******')
         # version is an integer in 4 bytes, little-endian
+        version = little_endian_to_int(s.read(4))
+
         # num_inputs is a varint, use read_varint(s)
+        num_in = read_varint(s)
         # parse num_inputs number of TxIns
+        inputs = []
+        for i in range (0, num_in):
+            inputs.append(TxIn.parse(s))
+
+        print(f'inputs{inputs}')
+        return Tx(version=version, tx_ins=inputs, tx_outs=None, locktime=None, testnet=False)
+
+        # TODO: fix error when running python3 scratchpad.py
         # num_outputs is a varint, use read_varint(s)
         # parse num_outputs number of TxOuts
         # locktime is an integer in 4 bytes, little-endian
         # return an instance of the class (see __init__ for args)
-        raise NotImplementedError
 
     # tag::source6[]
     def serialize(self):
@@ -165,6 +176,7 @@ class TxIn:
         return a TxIn object
         '''
         # prev_tx is 32 bytes, little endian
+        #### TXIN ###
         prev_tx = s.read(32)
         prev_tx = prev_tx[::-1]
         # print(f'prev_tx:{prev_tx}')
