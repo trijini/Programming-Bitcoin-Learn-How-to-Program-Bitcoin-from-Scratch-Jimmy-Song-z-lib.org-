@@ -69,5 +69,5 @@ import helper
 import script
 import tx
 
-raw_tx = bytes.fromhex()
 
+run(tx.TxTest("test_fee"))
