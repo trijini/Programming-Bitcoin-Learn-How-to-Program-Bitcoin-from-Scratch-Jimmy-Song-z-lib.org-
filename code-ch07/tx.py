@@ -160,6 +160,7 @@ class Tx:
     def sig_hash(self, input_index):
         '''Returns the integer representation of the hash that needs to get
         signed for index input_index'''
+
         # start the serialization with version
         # use int_to_little_endian in 4 bytes
         # add how many inputs there are using encode_varint
