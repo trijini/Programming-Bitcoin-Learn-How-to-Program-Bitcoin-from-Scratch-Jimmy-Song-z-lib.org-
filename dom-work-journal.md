@@ -10,3 +10,8 @@
 20221007
 
 - ECC
+
+20221008
+
+- Binary expansion
+
