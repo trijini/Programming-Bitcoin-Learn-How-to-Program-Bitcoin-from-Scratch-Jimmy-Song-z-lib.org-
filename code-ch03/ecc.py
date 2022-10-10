@@ -142,7 +142,7 @@ class Point:
         if self.x is None and self.y is None:
             return
         if self.y**2 != self.x**3 + a * x + b:
-            raise ValueError('({}, {}) is not on the curve'.format(x, y))
+            raise ValueError('({}, {}) is not onthe curve'.format(x, y))
     # end::source1[]
 
     def __eq__(self, other):
@@ -303,7 +303,7 @@ class ECCTest(TestCase):
             p1 = Point(x1, y1, a, b)
             p2 = Point(x2, y2, a, b)
             p3 = Point(x3, y3, a, b)
-            self.assertEquals(p1 + p2 p3)
+            self.assertEquals(p1 + p2, p3)
 
     def test_rmul(self):
         # tests the following scalar multiplications
