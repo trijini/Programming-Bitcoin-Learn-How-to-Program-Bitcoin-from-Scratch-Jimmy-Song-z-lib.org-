@@ -23,3 +23,4 @@
 
 20221017
 - Serialization
+- Sertialization ex4
