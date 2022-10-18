@@ -25,3 +25,6 @@
 - Serialization
 - Serialization ex4
 - Serialization ex5
+
+20221018
+- Endianness
