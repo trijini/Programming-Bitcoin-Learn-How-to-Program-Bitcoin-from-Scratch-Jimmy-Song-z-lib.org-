@@ -28,3 +28,4 @@
 
 20221018
 - Endianness
+- Read wiki on UTF-8
