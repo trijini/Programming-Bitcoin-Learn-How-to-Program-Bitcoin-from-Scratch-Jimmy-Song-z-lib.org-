@@ -29,3 +29,6 @@
 20221018
 - Endianness
 - Read wiki on UTF-8
+
+20221019
+- Setting up ssh environment
