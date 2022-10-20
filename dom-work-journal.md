@@ -32,3 +32,5 @@
 
 20221019
 - Setting up ssh environment
+20221020
+- Send testnet transaction
