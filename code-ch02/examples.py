@@ -5,7 +5,7 @@
 >>> p2 = Point(-1, -2, 5, 7)
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
-  File "ecc.py", line 143, in __init__
+  File "ecc-dom.py", line 143, in __init__
     raise ValueError('({}, {}) is not on the curve'.format(self.x, self.y))
 ValueError: (-1, -2) is not on the curve
 

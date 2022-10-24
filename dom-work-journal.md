@@ -34,3 +34,6 @@
 - Setting up ssh environment
 20221020
 - Send testnet transaction
+
+20221024
+- Tx serialization

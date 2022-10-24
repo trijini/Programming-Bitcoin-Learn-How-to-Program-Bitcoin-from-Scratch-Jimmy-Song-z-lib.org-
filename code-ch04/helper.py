@@ -40,7 +40,6 @@ def encode_base58(s):
     while num > 0:  # <2>
         num, mod = divmod(num, 58)
         result = BASE58_ALPHABET[mod] + result
-    print('[DOM] Returning from encode_base58:%s'.format(prefix + result))
     return prefix + result  # <3>
 # end::source2[]
 
@@ -82,6 +81,8 @@ class HelperTest(TestCase):
     def test_little_endian_to_int(self):
         h = bytes.fromhex('99c3980000000000')
         want = 10011545
+        # 0x893c99 = 8993945, which is incorrect
+        #
         self.assertEqual(little_endian_to_int(h), want)
         h = bytes.fromhex('a135ef0100000000')
         want = 32454049
