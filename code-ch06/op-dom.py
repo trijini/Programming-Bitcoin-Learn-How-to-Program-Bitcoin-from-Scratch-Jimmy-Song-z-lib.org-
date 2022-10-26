@@ -1,7 +1,6 @@
 import hashlib
 
 from unittest import TestCase
-
 from ecc import (
     S256Point,
     Signature,
@@ -644,15 +643,11 @@ def op_sha256(stack):
 
 
 def op_hash160(stack):
-    # check that there's at least 1 element on the stack
-    # pop off the top element from the stack
-    # push a hash160 of the popped off element to the stack
     if len(stack) < 1:
         return False
     element = stack.pop()
     stack.append(hash160(element))
     return True
-
 
 # tag::source2[]
 def op_hash256(stack):
@@ -666,13 +661,34 @@ def op_hash256(stack):
 
 def op_checksig(stack, z):
     # check that there are at least 2 elements on the stack
+    if len(stack) < 2:
+        return False
+
     # the top element of the stack is the SEC pubkey
+    sec_pubkey = stack.pop()
+    print(f'stack sec:{sec_pubkey.hex()}')
+
     # the next element of the stack is the DER signature
+    der_signature = stack.pop()[:-1]
+    print(f'stack der:{der_signature}')
+
     # take off the last byte of the signature as that's the hash_type
+    hash_type = der_signature[-1:]
+    print(f'hash_type:{hash_type.hex()}')
+
     # parse the serialized pubkey and signature into objects
-    # verify the signature using S256Point.verify()
-    # push an encoded 1 or 0 depending on whether the signature verified
-    raise NotImplementedError
+    try:
+        point = S256Point.parse(sec_pubkey)
+        der_signature = Signature.parse(der_signature)
+        print(f'point:{point}')
+        print(f'sig:{der_signature}')
+    except (ValueError, SyntaxError) as e:
+        return False
+    if point.verify(z, der_signature):
+        stack.append(encode_num(1))
+    else:
+        stack.append(encode_num(0))
+    return True
 
 
 def op_checksigverify(stack, z):
@@ -737,7 +753,12 @@ class OpTest(TestCase):
         sig = bytes.fromhex('3045022000eff69ef2b1bd93a66ed5219add4fb51e11a840f404876325a1e8ffe0529a2c022100c7207fee197d27c618aea621406f6bf5ef6fca38681d82b2f06fddbdce6feab601')
         stack = [sig, sec]
         self.assertTrue(op_checksig(stack, z))
+        print()
+        print(f'final:{stack}')
+        print(f'final:{len(stack)}')
+
         self.assertEqual(decode_num(stack[0]), 1)
+
 
 
 OP_CODE_FUNCTIONS = {

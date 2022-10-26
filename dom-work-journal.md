@@ -38,4 +38,5 @@
 20221024
 - Tx serialization
 20221026
-- Finixhed Chp5. transactions
+- Finished Chp5. transactions
+- wip. chp6 script
