@@ -40,3 +40,5 @@
 20221026
 - Finished Chp5. transactions
 - wip. chp6 script
+20221031
+- Bitcoin scripts
