@@ -42,3 +42,5 @@
 - wip. chp6 script
 20221031
 - Bitcoin scripts
+20221102
+- wip. Bitcoin scripts
