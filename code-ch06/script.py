@@ -102,9 +102,10 @@ class Script:
         return encode_varint(total) + result  # <6>
     # end::source3[]
 
-    # tag::source5[]
+    # tag::source5[        cmds = self.cmds[:]  # <1>]
     def evaluate(self, z):
-        cmds = self.cmds[:]  # <1>
+        #cmds = self.cmds[:]  # <1>
+        cmds = self.cmds
         stack = []
         altstack = []
         while len(cmds) > 0:  # <2>

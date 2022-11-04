@@ -44,3 +44,4 @@
 - Bitcoin scripts
 20221102
 - wip. Bitcoin scripts
+- sha1 collisions and bitcoin scripts
