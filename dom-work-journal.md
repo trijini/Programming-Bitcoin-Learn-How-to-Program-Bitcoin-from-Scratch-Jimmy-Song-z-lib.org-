@@ -45,3 +45,5 @@
 20221102
 - wip. Bitcoin scripts
 - sha1 collisions and bitcoin scripts
+20221103
+- wip. signature verification
