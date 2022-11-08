@@ -49,3 +49,5 @@
 - wip. signature verification
 20221104
 - wip. signing transactions
+20221107
+- wip. sighash_all

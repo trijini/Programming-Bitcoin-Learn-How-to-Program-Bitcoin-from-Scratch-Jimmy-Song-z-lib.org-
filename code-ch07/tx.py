@@ -4,6 +4,7 @@ from unittest import TestCase
 import json
 import requests
 
+import tx
 from ecc import PrivateKey
 from helper import (
     encode_varint,
@@ -22,9 +23,9 @@ class TxFetcher:
     @classmethod
     def get_url(cls, testnet=False):
         if testnet:
-            return 'http://testnet.programmingbitcoin.com'
+            return 'https://blockstream.info/testnet/api'
         else:
-            return 'http://mainnet.programmingbitcoin.com'
+            return 'https://blockstream.info/testnet/api'
 
     @classmethod
     def fetch(cls, tx_id, testnet=False, fresh=False):
@@ -163,19 +164,43 @@ class Tx:
 
         # start the serialization with version
         # use int_to_little_endian in 4 bytes
+        result = int_to_little_endian(self.version, 4)
         # add how many inputs there are using encode_varint
+        result += encode_varint(len(self.tx_ins))
         # loop through each input using enumerate, so we have the input index
+        for i, tx_in in enumerate(self.tx_ins):
             # if the input index is the one we're signing
+            if i == input_index:
             # the previous tx's ScriptPubkey is the ScriptSig
-            # Otherwise, the ScriptSig is empty
-            # add the serialization of the input with the ScriptSig we want
+                prev_tx = tx.TxFetcher.fetch(self.tx_ins[i].prev_tx.hex())
+                prev_tx_output = prev_tx.tx_outs[tx_in.prev_index]
+                # add the serialization of the input with the ScriptSig we want
+                script_sig = prev_tx_output.script_pubkey
+                result += TxIn(
+                    prev_tx=tx_in.prev_tx,
+                    prev_index=tx_in.prev_index,
+                    script_sig=script_sig,
+                    sequence=tx_in.sequence
+                ).serialize()
+
+            else:
+                # Otherwise, the ScriptSig is empty
+                continue
+
         # add how many outputs there are using encode_varint
+        outs_num = encode_varint(len(self.tx_outs))
+        result += outs_num
         # add the serialization of each output
+        for i, tx_out in enumerate(self.tx_outs):
+            result += TxOut.serialize(tx_out)
         # add the locktime using int_to_little_endian in 4 bytes
+        result += int_to_little_endian(self.locktime, 4)
         # add SIGHASH_ALL using int_to_little_endian in 4 bytes
+        result += int_to_little_endian(SIGHASH_ALL, 4)
         # hash256 the serialization
+        hash = hash256(result)
         # convert the result to an integer using int.from_bytes(x, 'big')
-        raise NotImplementedError
+        return int.from_bytes(hash, 'big')
 
     def verify_input(self, input_index):
         '''Returns whether the input has a valid signature'''
