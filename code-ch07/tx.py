@@ -48,7 +48,6 @@ class TxFetcher:
             cls.cache[tx_id] = tx
         cls.cache[tx_id].testnet = testnet
         return cls.cache[tx_id]
-
     @classmethod
     def load_cache(cls, filename):
         disk_cache = json.loads(open(filename, 'r').read())
@@ -182,11 +181,9 @@ class Tx:
                     script_sig=script_sig,
                     sequence=tx_in.sequence
                 ).serialize()
-
             else:
                 # Otherwise, the ScriptSig is empty
                 continue
-
         # add how many outputs there are using encode_varint
         outs_num = encode_varint(len(self.tx_outs))
         result += outs_num
@@ -205,11 +202,20 @@ class Tx:
     def verify_input(self, input_index):
         '''Returns whether the input has a valid signature'''
         # get the relevant input
+        tx_in = self.tx_ins[input_index]
         # grab the previous ScriptPubKey
+        #script_pubkey = tx_in.script_pubkey
+        script_pubkey = tx_in.script_pubkey()
         # get the signature hash (z)
+        z = self.sig_hash(input_index)
+        #script_pubkey = prev_tx.tx_outs[tx_in.prev_index].sig_hash(input_index)
+        #script_pubkey = prev_tx.sig_hash(input_index)
+
         # combine the current ScriptSig and the previous ScriptPubKey
+        combined_script = tx_in.script_sig + script_pubkey
+
         # evaluate the combined script
-        raise NotImplementedError
+        return combined_script.evaluate(z)
 
     # tag::source2[]
     def verify(self):

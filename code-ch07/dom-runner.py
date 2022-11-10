@@ -10,4 +10,4 @@ import script
 import op
 
 
-run(tx.TxTest("test_sig_hash"))
+run(tx.TxTest("test_verify_p2pkh"))
