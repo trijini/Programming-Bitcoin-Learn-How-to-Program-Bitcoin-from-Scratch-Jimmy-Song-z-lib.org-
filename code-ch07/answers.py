@@ -121,15 +121,15 @@ def sig_hash(self, input_index):
     for i, tx_in in enumerate(self.tx_ins):
         if i == input_index:
             s += TxIn(
-                prev_tx=tx_in.prev_tx,
-                prev_index=tx_in.prev_index,
+                prev_tx=tx_in.prev_tx_vin1,
+                prev_index=tx_in.prev_index_vin1,
                 script_sig=tx_in.script_pubkey(self.testnet),
                 sequence=tx_in.sequence,
             ).serialize()
         else:
             s += TxIn(
-                prev_tx=tx_in.prev_tx,
-                prev_index=tx_in.prev_index,
+                prev_tx=tx_in.prev_tx_vin1,
+                prev_index=tx_in.prev_index_vin1,
                 sequence=tx_in.sequence,
             ).serialize()
     s += encode_varint(len(self.tx_outs))
