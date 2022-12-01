@@ -37,7 +37,7 @@ bdbd4bb7152ae'
 >>> s = int_to_little_endian(tx_obj.version, 4)
 >>> s += encode_varint(len(tx_obj.tx_ins))
 >>> i = tx_obj.tx_ins[0]
->>> s += TxIn(i.prev_tx, i.prev_index, redeem_script, i.sequence).serialize()
+>>> s += TxIn(i.prev_tx_vin1, i.prev_index_vin1, redeem_script, i.sequence).serialize()
 >>> s += encode_varint(len(tx_obj.tx_outs))
 >>> for tx_out in tx_obj.tx_outs:
 ...    s += tx_out.serialize()
@@ -175,8 +175,8 @@ def sig_hash(self, input_index, redeem_script=None):
         else:
             script_sig = None
         s += TxIn(
-            prev_tx=tx_in.prev_tx,
-            prev_index=tx_in.prev_index,
+            prev_tx=tx_in.prev_tx_vin1,
+            prev_index=tx_in.prev_index_vin1,
             script_sig=script_sig,
             sequence=tx_in.sequence,
         ).serialize()
