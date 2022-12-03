@@ -8,4 +8,5 @@ import op
 import script
 import tx
 
-run(op.OpTest("test_op_checkmultisig"))
+run(helper.HelperTest("test_p2pkh_address"))
+
