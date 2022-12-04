@@ -8,5 +8,5 @@ import op
 import script
 import tx
 
-run(helper.HelperTest("test_p2pkh_address"))
+run(helper.HelperTest("test_p2sh_address"))
 
