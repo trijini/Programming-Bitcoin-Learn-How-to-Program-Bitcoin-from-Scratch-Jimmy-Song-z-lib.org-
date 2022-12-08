@@ -705,9 +705,7 @@ def op_checkmultisig(stack, z):
     for _ in range(m):
         der_signatures.append(stack.pop()[:-1])  # <1>
     stack.pop()  # <2>
-    points = []
     try:
-        # end::source1[]
         # parse all the points
         points = [S256Point.parse(sec) for sec in sec_pubkeys]
         sigs = [Signature.parse(der) for der in der_signatures]
@@ -726,7 +724,6 @@ def op_checkmultisig(stack, z):
                     break
         # the signatures are valid, so push a 1 to the stack
         stack.append(encode_num(1))
-        # tag::source1[]
     except (ValueError, SyntaxError):
         return False
     return True

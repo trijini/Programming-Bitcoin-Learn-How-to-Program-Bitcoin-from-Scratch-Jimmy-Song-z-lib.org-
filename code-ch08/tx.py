@@ -22,14 +22,14 @@ class TxFetcher:
     @classmethod
     def get_url(cls, testnet=False):
         if testnet:
-            return 'http://testnet.programmingbitcoin.com'
+            return 'https://blockstream.info/testnet/api'
         else:
-            return 'http://mainnet.programmingbitcoin.com'
+            return 'https://blockstream.info/api'
 
     @classmethod
     def fetch(cls, tx_id, testnet=False, fresh=False):
         if fresh or (tx_id not in cls.cache):
-            url = '{}/tx/{}.hex'.format(cls.get_url(testnet), tx_id)
+            url = '{}/tx/{}/hex'.format(cls.get_url(testnet), tx_id)
             response = requests.get(url)
             try:
                 raw = bytes.fromhex(response.text.strip())
@@ -179,8 +179,8 @@ class Tx:
                 script_sig = None
             # add the serialization of the input with the ScriptSig we want
             s += TxIn(
-                prev_tx=tx_in.prev_tx_vin1,
-                prev_index=tx_in.prev_index_vin1,
+                prev_tx=tx_in.prev_tx,
+                prev_index=tx_in.prev_index,
                 script_sig=script_sig,
                 sequence=tx_in.sequence,
             ).serialize()
@@ -366,8 +366,8 @@ class TxTest(TestCase):
         tx = Tx.parse(stream)
         self.assertEqual(len(tx.tx_ins), 1)
         want = bytes.fromhex('d1c789a9c60383bf715f3f6ad9d14b91fe55f3deb369fe5d9280cb1a01793f81')
-        self.assertEqual(tx.tx_ins[0].prev_tx_vin1, want)
-        self.assertEqual(tx.tx_ins[0].prev_index_vin1, 0)
+        self.assertEqual(tx.tx_ins[0].prev_tx, want)
+        self.assertEqual(tx.tx_ins[0].prev_index, 0)
         want = bytes.fromhex('6b483045022100ed81ff192e75a3fd2304004dcadb746fa5e24c5031ccfcf21320b0277457c98f02207a986d955c6e0cb35d446a89d3f56100f4d7f67801c31967743a9c8e10615bed01210349fc4e631e3624a545de3f89f5d8684c7b8138bd94bdd531d2e213bf016b278a')
         self.assertEqual(tx.tx_ins[0].script_sig.serialize(), want)
         self.assertEqual(tx.tx_ins[0].sequence, 0xfffffffe)
