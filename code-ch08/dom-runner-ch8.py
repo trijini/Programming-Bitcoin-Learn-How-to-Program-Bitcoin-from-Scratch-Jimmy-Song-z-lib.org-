@@ -18,20 +18,32 @@ redeem_script = Script.parse(BytesIO(bytes.fromhex(hex_redeem_script)))
 stream = BytesIO(bytes.fromhex(hex_tx))
 
 # modify the transaction
-tx = Tx.parse(stream)
+tx_obj = Tx.parse(stream)
 # start with version
-z = b''
-z += int_to_little_endian(tx.version, 4)
+s = b''
+s += int_to_little_endian(tx_obj.version, 4)
 # add number of inputs
-z += encode_varint(len(tx.tx_ins))
+s += encode_varint(len(tx_obj.tx_ins))
 # modify the single TxIn to have the ScriptSig to be the RedeemScript
+tx_obj.tx_ins[0].script_sig = redeem_script
+s += tx_obj.tx_ins[0].serialize()
 # add the number of outputs
+s += encode_varint(len(tx_obj.tx_outs))
 # add each output serialization
+for out in tx_obj.tx_outs:
+    s += out.serialize()
 # add the locktime
+s += int_to_little_endian(tx_obj.locktime, 4)
 # add the SIGHASH_ALL
+s += int_to_little_endian(SIGHASH_ALL, 4)
 # hash256 the result
+s256 = hash256(s)
 # interpret as a Big-Endian number
+z = int.from_bytes(s256, 'big')
 # parse the S256Point
+point = S256Point.parse(sec)
 # parse the Signature
+sig = Signature.parse(der)
 # verify that the point, z and signature work
+print(point.verify(z, sig))
 print()
