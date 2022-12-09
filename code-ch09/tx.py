@@ -276,9 +276,11 @@ class Tx:
         Returns None if this transaction is not a coinbase transaction
         '''
         # if this is NOT a coinbase transaction, return None
+        if not self.is_coinbase():
+            return None
         # grab the first cmd
         # convert the cmd from little endian to int
-        raise NotImplementedError
+        return little_endian_to_int(self.tx_ins[0].script_sig.cmds[0])
 
 
 class TxIn:
