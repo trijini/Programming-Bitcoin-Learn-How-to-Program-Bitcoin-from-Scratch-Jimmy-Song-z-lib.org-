@@ -1,8 +1,7 @@
-from io import BytesIO
-from unittest import TestCase
-
 import json
 import requests
+from io import BytesIO
+from unittest import TestCase
 
 from ecc import PrivateKey
 from helper import (
@@ -172,8 +171,11 @@ class Tx:
             # if the input index is the one we're signing
             if i == input_index:
                 # if the RedeemScript was passed in, that's the ScriptSig
-                # otherwise the previous tx's ScriptPubkey is the ScriptSig
-                script_sig = tx_in.script_pubkey(self.testnet)
+                if (redeem_script):
+                    script_sig = redeem_script
+                else:
+                    # otherwise the previous tx's ScriptPubkey is the ScriptSig
+                    script_sig = tx_in.script_pubkey(self.testnet)
             # Otherwise, the ScriptSig is empty
             else:
                 script_sig = None
@@ -206,13 +208,19 @@ class Tx:
         script_pubkey = tx_in.script_pubkey(testnet=self.testnet)
         # check to see if the ScriptPubkey is a p2sh using
         # Script.is_p2sh_script_pubkey()
+        if script_pubkey.is_p2sh_script_pubkey():
             # the last cmd in a p2sh is the RedeemScript
+            redeem_script = tx_in.script_sig.cmds[-1]
             # prepend the length of the RedeemScript using encode_varint
+            redeem_script = encode_varint(len(redeem_script)) + redeem_script
             # parse the RedeemScript
-        # otherwise RedeemScript is None
+            redeem_script = Script.parse(BytesIO(redeem_script))
+        else:
+            # otherwise RedeemScript is None
+            redeem_script = None
         # get the signature hash (z)
         # pass the RedeemScript to the sig_hash method
-        z = self.sig_hash(input_index)
+        z = self.sig_hash(input_index, redeem_script)
         # combine the current ScriptSig and the previous ScriptPubKey
         combined = tx_in.script_sig + script_pubkey
         # evaluate the combined script
