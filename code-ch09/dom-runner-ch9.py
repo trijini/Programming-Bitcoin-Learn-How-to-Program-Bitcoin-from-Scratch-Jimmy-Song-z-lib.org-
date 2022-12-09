@@ -10,4 +10,4 @@ import tx
 
 
 reload(tx)
-run(tx.TxTest("test_coinbase_height"))
+run(block.BlockTest("test_serialize"))
