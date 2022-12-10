@@ -9,5 +9,5 @@ import script
 import tx
 
 
-reload(tx)
-run(block.BlockTest("test_serialize"))
+reload(block)
+run(block.BlockTest("test_bip9"))
