@@ -101,7 +101,12 @@ class Block:
         '''Returns the block difficulty based on the bits'''
         # note difficulty is (target of lowest difficulty) / (self's target)
         # lowest difficulty has bits that equal 0xffff001d
-        raise NotImplementedError
+        bits = self.bits
+        exponent = bits[-1]
+        coefficient = little_endian_to_int(bits[:-1])
+        target = coefficient * 256 ** (exponent - 3)
+        difficulty = 0xffff * 256 ** (0x1d - 3) / target
+        return difficulty
 
     def check_pow(self):
         '''Returns whether this block satisfies proof of work'''
