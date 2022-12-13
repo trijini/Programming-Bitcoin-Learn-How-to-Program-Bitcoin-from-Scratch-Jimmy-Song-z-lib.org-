@@ -10,4 +10,4 @@ import tx
 
 
 reload(block)
-run(block.BlockTest("test_bip9"))
+run(block.BlockTest("test_target"))

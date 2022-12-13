@@ -129,7 +129,10 @@ def bits_to_target(bits):
     # the first three bytes are the coefficient in little endian
     # the formula is:
     # coefficient * 256**(exponent-3)
-    raise NotImplementedError
+    exponent = bits[-1]
+    coefficient = little_endian_to_int(bits[:-1])
+    target = coefficient * 256**(exponent - 3)
+    return target
 
 
 # tag::source1[]
