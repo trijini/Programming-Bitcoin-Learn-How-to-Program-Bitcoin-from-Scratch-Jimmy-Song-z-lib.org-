@@ -12,4 +12,4 @@ from network import (
 )
 from io import BytesIO
 
-run(network.NetworkEnvelopeTest('test_parse'))
+run(network.NetworkEnvelopeTest('test_serialize'))

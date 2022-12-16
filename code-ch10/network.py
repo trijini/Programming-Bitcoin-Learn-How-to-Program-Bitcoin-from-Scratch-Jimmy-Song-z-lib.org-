@@ -69,12 +69,17 @@ class NetworkEnvelope:
     def serialize(self):
         '''Returns the byte serialization of the entire network message'''
         # add the network magic
+        s = self.magic
         # command 12 bytes
         # fill with 0's
+        s += self.command.decode('ascii').ljust(12, '0')
         # payload length 4 bytes, little endian
+        s += int_to_little_endian(len(self.payload), 4)
         # checksum 4 bytes, first four of hash256 of payload
+        s += hash256(self.payload)[:4]
         # payload
-        raise NotImplementedError
+        s += self.payload
+        return s
 
     def stream(self):
         '''Returns a stream for parsing the payload'''
