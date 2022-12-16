@@ -72,7 +72,7 @@ class NetworkEnvelope:
         s = self.magic
         # command 12 bytes
         # fill with 0's
-        s += self.command.decode('ascii').ljust(12, '0')
+        s += self.command + (b'\x00' * (12 - len(self.command)))
         # payload length 4 bytes, little endian
         s += int_to_little_endian(len(self.payload), 4)
         # checksum 4 bytes, first four of hash256 of payload
