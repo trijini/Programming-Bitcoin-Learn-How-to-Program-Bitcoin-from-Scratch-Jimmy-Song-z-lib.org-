@@ -12,4 +12,4 @@ from network import (
 )
 from io import BytesIO
 
-run(network.VersionMessageTest('test_serialize'))
+run(network.SimpleNodeTest('test_handshake'))

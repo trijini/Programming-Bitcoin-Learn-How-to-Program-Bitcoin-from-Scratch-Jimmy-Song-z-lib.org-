@@ -317,7 +317,9 @@ class SimpleNode:
         # create a version message
         # send the command
         # wait for a verack message
-        raise NotImplementedError
+        version = VersionMessage()
+        self.send(version)
+        self.wait_for(VerAckMessage)
     # tag::source4[]
 
     def send(self, message):  # <1>
@@ -353,5 +355,5 @@ class SimpleNode:
 class SimpleNodeTest(TestCase):
 
     def test_handshake(self):
-        node = SimpleNode('testnet.programmingbitcoin.com', testnet=True)
+        node = SimpleNode('testnet.programmingbitcoin.com', testnet=True, logging=True)
         node.handshake()
