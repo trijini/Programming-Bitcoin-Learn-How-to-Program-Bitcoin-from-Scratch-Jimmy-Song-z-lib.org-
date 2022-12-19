@@ -250,10 +250,14 @@ class GetHeadersMessage:
     def serialize(self):
         '''Serialize this message to send over the network'''
         # protocol version is 4 bytes little-endian
+        s = int_to_little_endian(self.version, 4)
         # number of hashes is a varint
+        s += encode_varint(self.num_hashes)
         # start block is in little-endian
+        s += self.start_block[::-1]
         # end block is also in little-endian
-        raise NotImplementedError
+        s += self.end_block[::-1]
+        return s
 
 
 class GetHeadersMessageTest(TestCase):
