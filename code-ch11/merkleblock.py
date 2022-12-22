@@ -185,18 +185,31 @@ class MerkleBlock:
     def parse(cls, s):
         '''Takes a byte stream and parses a merkle block. Returns a Merkle Block object'''
         # version - 4 bytes, Little-Endian integer
+        version = little_endian_to_int(s.read(4))
         # prev_block - 32 bytes, Little-Endian (use [::-1])
+        prev_block = s.read(32)[::-1]
         # merkle_root - 32 bytes, Little-Endian (use [::-1])
+        merkle_root = s.read(32)[::-1]
         # timestamp - 4 bytes, Little-Endian integer
+        timestamp = little_endian_to_int(s.read(4))
         # bits - 4 bytes
+        bits = s.read(4)
         # nonce - 4 bytes
+        nonce = s.read(4)
         # total transactions in block - 4 bytes, Little-Endian integer
+        total_txs = little_endian_to_int(s.read(4))
         # number of transaction hashes - varint
+        num_hashes = read_varint(s)
+        tx = []
         # each transaction is 32 bytes, Little-Endian
+        for i in range(num_hashes):
+            tx.append(s.read(32)[::-1])
         # length of flags field - varint
+        flags_size = read_varint(s)
         # read the flags field
+        flags = s.read(flags_size)
         # initialize class
-        raise NotImplementedError
+        return MerkleBlock(version, prev_block, merkle_root, timestamp, bits, nonce, total_txs, tx, flags)
 
     def is_valid(self):
         '''Verifies whether the merkle tree information validates to the merkle root'''

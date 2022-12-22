@@ -6,7 +6,8 @@ import block
 import ecc
 import helper
 import network
+import merkleblock
 import script
 import tx
 
-run(helper.HelperTest("test_merkle_parent"))
+run(merkleblock.MerkleBlockTest('test_parse'))
